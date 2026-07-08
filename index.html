@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Material digital com +250 técnicas de limpeza profissional para diaristas, faxineiras e profissionais de limpeza. Pronto para imprimir e usar no dia a dia." />
+    <meta property="og:title" content="+250 Técnicas de Limpeza Profissional" />
+    <meta property="og:description" content="Material digital pronto para imprimir, consultar e usar na rotina de limpeza residencial e comercial leve." />
+    <title>+250 Técnicas de Limpeza Profissional</title>
+    <script>
+      window.addEventListener(
+        "click",
+        function (event) {
+          var trigger = event.target.closest && event.target.closest("[data-open-basic-upsell]");
+          if (!trigger) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          event.stopPropagation();
+          window.dispatchEvent(new CustomEvent("landing:open-basic-upsell"));
+        },
+        true
+      );
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
