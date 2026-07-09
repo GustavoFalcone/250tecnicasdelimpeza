@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CHECKOUTS, IMAGES } from './config/offer.js';
+import { appendTrackingParams } from './utils/tracking.js';
 
 const completeOfferImage = IMAGES.completePlan;
 
@@ -258,7 +259,7 @@ function BasicPlanUpsellModal({ onClose, onCheckout }) {
       <div className="upsellModal">
         <p className="modalKicker">Antes de escolher</p>
         <h2>Espere! Você pode levar o material completo por R$17,90</h2>
-        <p className="modalLead">
+        <p className="modalDescription">
           Além das +250 técnicas, você também recebe a calculadora para saber quanto cobrar, a
           agenda da semana, as artes para divulgar sua faxina e o certificado de conclusão.
         </p>
@@ -274,14 +275,14 @@ function BasicPlanUpsellModal({ onClose, onCheckout }) {
         <p className="modalReinforce">Material completo com os 4 bônus.</p>
         <a
           className="modalPrimaryCta"
-          href={CHECKOUTS.completePopup}
+          href={appendTrackingParams(CHECKOUTS.completePopup)}
           onClick={() => onCheckout('completePopup')}
         >
           Quero o Plano Completo <span>→</span>
         </a>
         <a
           className="modalSecondaryLink"
-          href={CHECKOUTS.basicFull}
+          href={appendTrackingParams(CHECKOUTS.basicFull)}
           onClick={() => onCheckout('basicFull')}
         >
           Não, quero apenas o Plano Básico
@@ -330,7 +331,7 @@ function ExitOfferPage({ onContinue }) {
             <ExitPlanList items={basicItems} />
             <a
               className="exitBasicButton"
-              href={CHECKOUTS.basicDownsell}
+              href={appendTrackingParams(CHECKOUTS.basicDownsell)}
               onClick={handleCheckoutClick}
             >
               Garantir Plano Básico
@@ -354,7 +355,7 @@ function ExitOfferPage({ onContinue }) {
             <ExitPlanList items={completeExitItems} />
             <a
               className="exitCompleteButton"
-              href={CHECKOUTS.completeDownsell}
+              href={appendTrackingParams(CHECKOUTS.completeDownsell)}
               onClick={handleCheckoutClick}
             >
               Garantir Plano Completo
@@ -626,7 +627,6 @@ function LandingPage() {
               type="button"
               data-open-basic-upsell
               data-no-initiate-checkout
-              data-utmify-ignore
               onClick={() => setIsBasicUpsellOpen(true)}
             >
               Quero o Plano Básico
@@ -662,7 +662,11 @@ function LandingPage() {
               loading="lazy"
               decoding="async"
             />
-            <CTA className="completeCta pulseCta" href={CHECKOUTS.completeFull} onClick={markCheckoutClick}>
+            <CTA
+              className="completeCta pulseCta"
+              href={appendTrackingParams(CHECKOUTS.completeFull)}
+              onClick={markCheckoutClick}
+            >
               Quero o Plano Completo
             </CTA>
           </article>
