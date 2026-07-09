@@ -265,6 +265,12 @@ figure {
   object-fit: contain;
 }
 
+.imageBlock img[data-src] {
+  min-height: 180px;
+  background:
+    linear-gradient(110deg, rgba(143, 215, 220, 0.12), rgba(255, 255, 255, 0.78), rgba(143, 215, 220, 0.14));
+}
+
 .heroImage {
   width: 100%;
   max-width: min(100%, 620px);
@@ -287,6 +293,11 @@ figure {
 
 .hero .cta {
   max-width: 390px;
+}
+
+.hero,
+.topCountdown {
+  content-visibility: visible;
 }
 
 .cta {

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CHECKOUTS, IMAGES } from './config/offer.js';
+import { preloadImage, requestIdleTask } from './utils/performance.js';
 import { appendTrackingParams } from './utils/tracking.js';
 
 const completeOfferImage = IMAGES.completePlan;
@@ -185,9 +186,18 @@ function CTA({ children = 'Quero acessar o material', className = '', href = '#c
 }
 
 function ImageBlock({ src, alt, className = '', loading = 'lazy', fetchPriority = 'auto' }) {
+  const shouldDefer = loading === 'lazy';
+
   return (
     <figure className={`imageBlock ${className}`}>
-      <img src={src} alt={alt} loading={loading} decoding="async" fetchPriority={fetchPriority} />
+      <img
+        src={shouldDefer ? undefined : src}
+        data-src={shouldDefer ? src : undefined}
+        alt={alt}
+        loading={loading}
+        decoding="async"
+        fetchPriority={fetchPriority}
+      />
     </figure>
   );
 }
@@ -441,6 +451,38 @@ function LandingPage() {
     const openBasicUpsell = () => setIsBasicUpsellOpen(true);
     window.addEventListener('landing:open-basic-upsell', openBasicUpsell);
     return () => window.removeEventListener('landing:open-basic-upsell', openBasicUpsell);
+  }, []);
+
+  useEffect(() => {
+    if ('IntersectionObserver' in window) {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      const imageObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const image = entry.target;
+            image.src = image.dataset.src;
+            image.removeAttribute('data-src');
+            imageObserver.unobserve(image);
+          });
+        },
+        { rootMargin: '420px 0px' }
+      );
+
+      lazyImages.forEach((image) => imageObserver.observe(image));
+      return () => imageObserver.disconnect();
+    }
+
+    document.querySelectorAll('img[data-src]').forEach((image) => {
+      image.src = image.dataset.src;
+      image.removeAttribute('data-src');
+    });
+  }, [isBasicUpsellOpen, showExitOfferPage]);
+
+  useEffect(() => {
+    requestIdleTask(() => {
+      [IMAGES.visual, IMAGES.completePlan, IMAGES.checkoutTrust].forEach(preloadImage);
+    });
   }, []);
 
   useEffect(() => {
