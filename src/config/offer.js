@@ -1,9 +1,9 @@
 export const CHECKOUTS = {
-  basicFull: 'COLE_AQUI_O_LINK_DO_CHECKOUT_BASICO',
-  completeFull: 'COLE_AQUI_O_LINK_DO_CHECKOUT_COMPLETO',
-  basicDownsell: 'COLE_AQUI_O_LINK_DO_CHECKOUT_BASICO_DESCONTO',
-  completeDownsell: 'COLE_AQUI_O_LINK_DO_CHECKOUT_COMPLETO_DESCONTO',
-  completePopup: 'COLE_AQUI_O_LINK_DO_CHECKOUT_COMPLETO_POPUP'
+  basicFull: 'https://zuckpay.com.br/checkout/250-tecnicas-de-limpeza-profissional-plano-basico',
+  completeFull: 'https://zuckpay.com.br/checkout/250-tecnicas-de-limpeza-profissional-plano-completo',
+  basicDownsell: 'https://zuckpay.com.br/checkout/250-tecnicas-de-limpeza-profissional-plano-basico-1',
+  completeDownsell: 'https://zuckpay.com.br/checkout/250-tecnicas-de-limpeza-profissional-plano-completo-1',
+  completePopup: 'https://zuckpay.com.br/checkout/250-tecnicas-de-limpeza-profissional-plano-completo-1'
 };
 
 export const IMAGES = {

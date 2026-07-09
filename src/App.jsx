@@ -530,7 +530,7 @@ function LandingPage() {
             />
             <div className="heroActions">
               <CTA className="pulseCta" onClick={handlePlansClick}>
-                Quero acessar o material
+                Acessar as técnicas
               </CTA>
               <a className="secondaryHeroLink" href="#recebe" onClick={suppressExitIntent}>
                 Ver o que vou receber
