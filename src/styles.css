@@ -503,6 +503,19 @@ figure {
   content-visibility: visible;
 }
 
+.section,
+.demoSection,
+.audienceSection,
+.bonusSection,
+.priceSection,
+.guarantee,
+.faqSection,
+.finalCta,
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
 .cta {
   display: flex;
   width: 100%;

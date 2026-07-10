@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CHECKOUTS, IMAGES } from './config/offer.js';
-import { preloadImage, requestIdleTask } from './utils/performance.js';
 
 const completeOfferImage = IMAGES.completePlan;
 
@@ -357,7 +356,7 @@ function ImageBlock({ src, alt, className = '', loading = 'lazy', fetchPriority 
         alt={alt}
         loading={loading}
         decoding="async"
-        fetchPriority={fetchPriority}
+        fetchPriority={shouldDefer ? 'low' : fetchPriority}
       />
     </figure>
   );
@@ -617,6 +616,8 @@ function LandingPage() {
   useEffect(() => {
     if ('IntersectionObserver' in window) {
       const lazyImages = document.querySelectorAll('img[data-src]');
+      const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      const rootMargin = connection?.saveData ? '80px 0px' : '180px 0px';
       const imageObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -627,7 +628,7 @@ function LandingPage() {
             imageObserver.unobserve(image);
           });
         },
-        { rootMargin: '420px 0px' }
+        { rootMargin }
       );
 
       lazyImages.forEach((image) => imageObserver.observe(image));
@@ -639,12 +640,6 @@ function LandingPage() {
       image.removeAttribute('data-src');
     });
   }, [isBasicUpsellOpen, showExitOfferPage]);
-
-  useEffect(() => {
-    requestIdleTask(() => {
-      [IMAGES.visual, IMAGES.completePlan, IMAGES.checkoutTrust].forEach(preloadImage);
-    });
-  }, []);
 
   useEffect(() => {
     let frame = 0;
