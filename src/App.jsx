@@ -356,10 +356,19 @@ function ImageBlock({ src, alt, className = '', loading = 'lazy', fetchPriority 
         alt={alt}
         loading={loading}
         decoding="async"
-        fetchPriority={shouldDefer ? 'low' : fetchPriority}
+        fetchPriority={fetchPriority}
       />
     </figure>
   );
+}
+
+function loadDeferredImage(image) {
+  if (!image?.dataset?.src) return;
+
+  image.loading = 'eager';
+  image.fetchPriority = 'auto';
+  image.src = image.dataset.src;
+  image.removeAttribute('data-src');
 }
 
 function FloatingActions({ onPlansClick }) {
@@ -617,14 +626,14 @@ function LandingPage() {
     if ('IntersectionObserver' in window) {
       const lazyImages = document.querySelectorAll('img[data-src]');
       const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-      const rootMargin = connection?.saveData ? '80px 0px' : '180px 0px';
+      const slowConnection = connection?.effectiveType === '2g' || connection?.effectiveType === 'slow-2g';
+      const rootMargin = connection?.saveData ? '260px 0px' : slowConnection ? '620px 0px' : '1150px 0px';
       const imageObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
             const image = entry.target;
-            image.src = image.dataset.src;
-            image.removeAttribute('data-src');
+            loadDeferredImage(image);
             imageObserver.unobserve(image);
           });
         },
@@ -632,12 +641,30 @@ function LandingPage() {
       );
 
       lazyImages.forEach((image) => imageObserver.observe(image));
-      return () => imageObserver.disconnect();
+
+      const primeUpcomingImages = () => {
+        document.querySelectorAll('img[data-src]').forEach((image, index) => {
+          if (index < 3) loadDeferredImage(image);
+        });
+      };
+
+      const idleId =
+        'requestIdleCallback' in window
+          ? window.requestIdleCallback(primeUpcomingImages, { timeout: 2200 })
+          : window.setTimeout(primeUpcomingImages, 1200);
+
+      return () => {
+        imageObserver.disconnect();
+        if ('cancelIdleCallback' in window) {
+          window.cancelIdleCallback(idleId);
+        } else {
+          window.clearTimeout(idleId);
+        }
+      };
     }
 
     document.querySelectorAll('img[data-src]').forEach((image) => {
-      image.src = image.dataset.src;
-      image.removeAttribute('data-src');
+      loadDeferredImage(image);
     });
   }, [isBasicUpsellOpen, showExitOfferPage]);
 
