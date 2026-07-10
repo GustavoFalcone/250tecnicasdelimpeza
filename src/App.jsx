@@ -154,6 +154,168 @@ function formatTime(totalSeconds) {
   return [hours, minutes, seconds].map((value) => String(value).padStart(2, '0')).join(':');
 }
 
+function clamp(value, min = 0, max = 1) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function playWaterSound(audioContext) {
+  if (!audioContext) return;
+
+  const duration = 1.75;
+  const sampleRate = audioContext.sampleRate;
+  const frameCount = Math.floor(sampleRate * duration);
+  const buffer = audioContext.createBuffer(1, frameCount, sampleRate);
+  const output = buffer.getChannelData(0);
+
+  for (let index = 0; index < frameCount; index += 1) {
+    const time = index / sampleRate;
+    const fadeIn = Math.min(1, time / 0.18);
+    const fadeOut = Math.min(1, (duration - time) / 0.45);
+    const envelope = fadeIn * fadeOut;
+    const swish = Math.sin(2 * Math.PI * (95 + Math.sin(time * 9) * 24) * time);
+    const ripple = Math.sin(2 * Math.PI * (260 + Math.sin(time * 13) * 70) * time);
+    const droplets = Math.sin(2 * Math.PI * (950 + Math.sin(time * 23) * 220) * time);
+    output[index] =
+      ((Math.random() * 2 - 1) * 0.24 + swish * 0.08 + ripple * 0.045 + droplets * 0.018) * envelope;
+  }
+
+  const source = audioContext.createBufferSource();
+  source.buffer = buffer;
+
+  const filter = audioContext.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.setValueAtTime(740, audioContext.currentTime);
+  filter.Q.setValueAtTime(0.95, audioContext.currentTime);
+
+  const gain = audioContext.createGain();
+  gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.075, audioContext.currentTime + 0.1);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioContext.destination);
+  source.start();
+  source.stop(audioContext.currentTime + duration);
+}
+
+function CleanerIllustration() {
+  return (
+    <svg className="cleanerSvg" viewBox="0 0 96 92" aria-hidden="true" focusable="false">
+      <g className="cleanerBody">
+        <path className="cleanerBucket" d="M8 65h22l-4 18H12z" />
+        <path className="cleanerBucketLine" d="M9 66c6 5 14 5 21 0" />
+        <path className="cleanerLeg" d="M44 49l-8 31h10l8-31z" />
+        <path className="cleanerLeg" d="M57 49l7 31h10l-5-31z" />
+        <path className="cleanerShoe" d="M34 82h16c0 5-3 7-10 7h-8z" />
+        <path className="cleanerShoe" d="M62 82h16c1 5-2 7-9 7h-8z" />
+        <path className="cleanerTorso" d="M43 25h25l5 26c-9 6-25 6-36 0z" />
+        <path className="cleanerArm" d="M39 31c-8 4-13 10-14 17 6 2 12-3 18-11z" />
+        <path className="cleanerArm" d="M68 33c7 4 11 9 13 16-5 3-11-1-16-10z" />
+        <circle className="cleanerHead" cx="55" cy="17" r="11" />
+        <path className="cleanerHairBack" d="M43 15c-4 13 1 25 10 29 2-8 5-17 12-25z" />
+        <path className="cleanerHair" d="M42 15c4-15 24-15 31-2-8-1-17-5-31 2z" />
+        <path className="cleanerHairSide" d="M68 12c7 8 6 20-1 27-2-9-3-17 1-27z" />
+        <path className="cleanerSmile" d="M54 20c3 3 7 3 10 0" />
+        <circle className="cleanerEye" cx="52" cy="16" r="1.4" />
+        <circle className="cleanerEye" cx="63" cy="15" r="1.4" />
+        <path className="cleanerLash" d="M50 14l-3-2M65 13l3-2" />
+        <path className="cleanerGlove" d="M23 45c5-2 9 0 11 5-4 5-9 5-13 1z" />
+        <path className="cleanerGlove" d="M75 45c5-2 9 1 10 5-4 5-9 4-12 0z" />
+      </g>
+      <g className="mopGroup">
+        <path className="mopHandle" d="M35 12l43 70" />
+        <path className="mopHead" d="M73 80c4-6 10-6 15-2-3 9-15 11-24 6 2-3 5-4 9-4z" />
+        <path className="mopStrand" d="M70 82c5 4 11 5 18 1M66 86c7 3 14 3 22-2M76 78c2 5 1 8-3 11" />
+      </g>
+      <path className="cleaningSparkle" d="M83 61c2 3 4 5 8 6-4 1-6 3-8 6-2-3-4-5-8-6 4-1 6-3 8-6z" />
+    </svg>
+  );
+}
+
+function CleaningProgress() {
+  const [progress, setProgress] = useState(0);
+  const audioContextRef = useRef(null);
+  const intervalRef = useRef(0);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const updateProgress = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const checkout = document.getElementById('checkout');
+        const page = document.documentElement;
+        const targetTop = checkout ? checkout.offsetTop : page.scrollHeight - window.innerHeight;
+        const finishPoint = Math.max(1, targetTop - window.innerHeight * 0.22);
+        setProgress(clamp(window.scrollY / finishPoint));
+      });
+    };
+
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', updateProgress);
+      window.removeEventListener('resize', updateProgress);
+    };
+  }, []);
+
+  useEffect(() => {
+    const unlockAudio = async () => {
+      if (audioContextRef.current) return;
+
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+
+      const audioContext = new AudioContext();
+      audioContextRef.current = audioContext;
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
+      playWaterSound(audioContext);
+      window.setTimeout(() => playWaterSound(audioContext), 450);
+      intervalRef.current = window.setInterval(() => playWaterSound(audioContext), 15000);
+    };
+
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
+    window.addEventListener('click', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
+    window.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+      window.clearInterval(intervalRef.current);
+      audioContextRef.current?.close?.();
+    };
+  }, []);
+
+  return (
+    <div className="cleaningProgress" aria-label="Progresso até a seção de preços">
+      <div
+        className="cleaningProgressInner"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={Math.round(progress * 100)}
+        style={{ '--clean-progress': progress }}
+      >
+        <span className="cleanTrack" aria-hidden="true" />
+        <span className="cleanFill" aria-hidden="true" />
+        <span className="cleanFoam" aria-hidden="true" />
+        <span className="cleanerRunner">
+          <CleanerIllustration />
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function CountdownBar() {
   const [remaining, setRemaining] = useState(getBrasiliaRemaining());
 
@@ -555,6 +717,7 @@ function LandingPage() {
 
   return (
     <>
+      <CleaningProgress />
       <CountdownBar />
       <main className="mobileShell">
         <section className="hero reveal">

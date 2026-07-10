@@ -17,6 +17,7 @@
   --deep-shadow: 0 28px 60px rgba(0, 0, 0, 0.28);
   --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --clean-progress-height: 48px;
 }
 
 * {
@@ -63,19 +64,176 @@ img {
   max-width: none;
   margin-inline: auto;
   min-height: 100dvh;
-  padding-top: calc(52px + env(safe-area-inset-top, 0px));
+  padding-top: calc(52px + var(--clean-progress-height) + env(safe-area-inset-top, 0px));
   overflow: hidden;
   background: var(--white);
   box-shadow: none;
 }
 
-.topCountdown {
+.cleaningProgress {
   position: fixed;
   inset: 0 0 auto;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  padding: calc(6px + env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) 6px max(10px, env(safe-area-inset-left, 0px));
+  background:
+    radial-gradient(circle at calc(var(--clean-progress, 0) * 100%) 80%, rgba(255, 255, 255, 0.95), transparent 22px),
+    linear-gradient(90deg, #f2ffff 0%, #dff7f8 48%, #c8f0f2 100%);
+  border-bottom: 1px solid rgba(53, 127, 135, 0.18);
+  box-shadow: 0 8px 24px rgba(36, 95, 102, 0.16);
+}
+
+.cleaningProgressInner {
+  position: relative;
+  width: min(calc(100vw - 22px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)), 640px);
+  height: 36px;
+}
+
+.cleanTrack,
+.cleanFill,
+.cleanFoam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 12px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+}
+
+.cleanTrack {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(53, 127, 135, 0.2);
+  box-shadow: inset 0 1px 5px rgba(36, 95, 102, 0.12);
+}
+
+.cleanFill {
+  right: auto;
+  width: calc(var(--clean-progress, 0) * 100%);
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.4), transparent 42%),
+    linear-gradient(90deg, #8fd7dc 0%, #52aeb7 100%);
+  box-shadow: 0 8px 18px rgba(53, 127, 135, 0.28);
+  transition: width 0.28s var(--ease-out);
+}
+
+.cleanFoam {
+  right: auto;
+  width: calc(var(--clean-progress, 0) * 100%);
+  height: 16px;
+  background:
+    radial-gradient(circle at 12px 8px, rgba(255, 255, 255, 0.95) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 34px 7px, rgba(255, 255, 255, 0.8) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 58px 9px, rgba(255, 255, 255, 0.82) 0 2px, transparent 2.5px);
+  background-size: 76px 16px;
+  opacity: 0.78;
+  animation: foamSlide 3.6s linear infinite;
+  pointer-events: none;
+}
+
+.cleanerRunner {
+  position: absolute;
+  left: clamp(24px, calc(var(--clean-progress, 0) * 100%), calc(100% - 24px));
+  top: 50%;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  transform: translate(-50%, -54%);
+  transition: left 0.28s var(--ease-out);
+  filter: drop-shadow(0 12px 14px rgba(36, 95, 102, 0.22));
+}
+
+.cleanerSvg {
+  width: 48px;
+  height: 48px;
+  overflow: visible;
+  animation: cleanerBob 1.35s ease-in-out infinite;
+}
+
+.cleanerTorso,
+.cleanerLeg {
+  fill: #2c8aa0;
+}
+
+.cleanerHead,
+.cleanerArm {
+  fill: #f0c0a2;
+}
+
+.cleanerHair,
+.cleanerHairBack,
+.cleanerHairSide,
+.cleanerGlove {
+  fill: #f4b23f;
+}
+
+.cleanerHairBack,
+.cleanerHairSide {
+  fill: #f8c960;
+}
+
+.cleanerBucket {
+  fill: #5f99a4;
+}
+
+.cleanerBucketLine,
+.cleanerSmile,
+.cleanerLash,
+.mopHandle,
+.mopStrand {
+  fill: none;
+  stroke: #102c35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mopHandle {
+  stroke-width: 4;
+}
+
+.mopStrand {
+  stroke: #ecffff;
+  stroke-width: 3;
+}
+
+.cleanerBucketLine,
+.cleanerSmile,
+.cleanerLash {
+  stroke-width: 2.3;
+}
+
+.cleanerShoe,
+.cleanerEye {
+  fill: #102c35;
+}
+
+.mopGroup {
+  transform-origin: 55px 46px;
+  animation: mopSweep 1.35s ease-in-out infinite;
+}
+
+.mopHead {
+  fill: #f4ffff;
+  stroke: #102c35;
+  stroke-width: 2;
+}
+
+.cleaningSparkle {
+  fill: #ffffff;
+  opacity: 0.85;
+  animation: sparklePulse 1.8s ease-in-out infinite;
+}
+
+.topCountdown {
+  position: fixed;
+  inset: calc(var(--clean-progress-height) + env(safe-area-inset-top, 0px)) 0 auto;
   z-index: 1000;
   display: flex;
   justify-content: center;
-  padding: calc(7px + env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) 7px max(10px, env(safe-area-inset-left, 0px));
+  padding: 7px max(10px, env(safe-area-inset-right, 0px)) 7px max(10px, env(safe-area-inset-left, 0px));
   background: var(--dark);
   color: var(--white);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
@@ -113,6 +271,51 @@ img {
   font-size: clamp(0.55rem, 2.35vw, 0.66rem);
   font-weight: 900;
   white-space: nowrap;
+}
+
+@keyframes cleanerBob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-3px) rotate(1.5deg);
+  }
+}
+
+@keyframes mopSweep {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes foamSlide {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 76px 0;
+  }
+}
+
+@keyframes sparklePulse {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.58;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
 }
 
 .hero {
@@ -1651,6 +1854,16 @@ details p {
     font-size: 0.78rem;
   }
 
+  .cleaningProgressInner {
+    max-width: 760px;
+  }
+
+  .cleanerRunner,
+  .cleanerSvg {
+    width: 54px;
+    height: 54px;
+  }
+
   .hero {
     min-height: auto;
     display: flex;
@@ -1966,7 +2179,11 @@ details p {
   .completeCard,
   .faqStack details,
   .pulseCta,
-  .floatingOffer {
+  .floatingOffer,
+  .cleanerSvg,
+  .mopGroup,
+  .cleanFoam,
+  .cleaningSparkle {
     opacity: 1;
     transform: none;
     animation: none;
@@ -1975,6 +2192,25 @@ details p {
 }
 
 @media (max-width: 374px) {
+  :root {
+    --clean-progress-height: 44px;
+  }
+
+  .cleaningProgressInner {
+    height: 32px;
+  }
+
+  .cleanerRunner,
+  .cleanerSvg {
+    width: 42px;
+    height: 42px;
+  }
+
+  .cleanTrack,
+  .cleanFill {
+    height: 10px;
+  }
+
   h1 {
     font-size: 1.42rem;
   }
