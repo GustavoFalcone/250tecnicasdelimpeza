@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CHECKOUTS, IMAGES } from './config/offer.js';
 import { preloadImage, requestIdleTask } from './utils/performance.js';
-import { appendTrackingParams } from './utils/tracking.js';
 
 const completeOfferImage = IMAGES.completePlan;
 
@@ -285,15 +284,23 @@ function BasicPlanUpsellModal({ onClose, onCheckout }) {
         <p className="modalReinforce">Material completo com os 4 bônus.</p>
         <a
           className="modalPrimaryCta"
-          href={appendTrackingParams(CHECKOUTS.completePopup)}
-          onClick={() => onCheckout('completePopup')}
+          href="#"
+          onClick={(event) => {
+            event.preventDefault();
+            onCheckout('completePopup');
+            redirectWithParams(CHECKOUTS.completePopup);
+          }}
         >
           Quero o Plano Completo <span>→</span>
         </a>
         <a
           className="modalSecondaryLink"
-          href={appendTrackingParams(CHECKOUTS.basicFull)}
-          onClick={() => onCheckout('basicFull')}
+          href="#"
+          onClick={(event) => {
+            event.preventDefault();
+            onCheckout('basicFull');
+            redirectWithParams(CHECKOUTS.basicFull);
+          }}
         >
           Não, quero apenas o Plano Básico
         </a>
@@ -341,8 +348,12 @@ function ExitOfferPage({ onContinue }) {
             <ExitPlanList items={basicItems} />
             <a
               className="exitBasicButton"
-              href={appendTrackingParams(CHECKOUTS.basicDownsell)}
-              onClick={handleCheckoutClick}
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                handleCheckoutClick();
+                redirectWithParams(CHECKOUTS.basicDownsell);
+              }}
             >
               Garantir Plano Básico
             </a>
@@ -365,8 +376,12 @@ function ExitOfferPage({ onContinue }) {
             <ExitPlanList items={completeExitItems} />
             <a
               className="exitCompleteButton"
-              href={appendTrackingParams(CHECKOUTS.completeDownsell)}
-              onClick={handleCheckoutClick}
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                handleCheckoutClick();
+                redirectWithParams(CHECKOUTS.completeDownsell);
+              }}
             >
               Garantir Plano Completo
             </a>
@@ -378,9 +393,13 @@ function ExitOfferPage({ onContinue }) {
             Continuar navegando
           </button>
         ) : (
-          <a className="exitReturnLink" href="/">
+          <button
+            className="exitReturnLink"
+            type="button"
+            onClick={() => redirectWithParams('/')}
+          >
             Continuar navegando
-          </a>
+          </button>
         )}
       </main>
     </>
@@ -706,8 +725,12 @@ function LandingPage() {
             />
             <CTA
               className="completeCta pulseCta"
-              href={appendTrackingParams(CHECKOUTS.completeFull)}
-              onClick={markCheckoutClick}
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                markCheckoutClick();
+                redirectWithParams(CHECKOUTS.completeFull);
+              }}
             >
               Quero o Plano Completo
             </CTA>
