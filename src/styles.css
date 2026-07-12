@@ -406,8 +406,17 @@ figure {
 
 .hero h1 {
   max-width: 720px;
-  font-size: clamp(1.28rem, 5.2vw, 2.15rem);
+  font-size: clamp(1.48rem, 6vw, 2.35rem);
   line-height: 1.08;
+  text-align: center;
+}
+
+.hero .subheadline {
+  max-width: 39rem;
+  margin: 12px auto 18px;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 3.8vw, 1.08rem);
+  line-height: 1.45;
   text-align: center;
 }
 
@@ -1682,7 +1691,7 @@ details p {
 
   .hero h1 {
     max-width: 760px;
-    font-size: clamp(1.8rem, 4.4vw, 2.55rem);
+    font-size: clamp(1.95rem, 4.7vw, 2.75rem);
     line-height: 1.05;
     text-align: center;
   }
@@ -1909,7 +1918,7 @@ details p {
 
   .hero h1 {
     max-width: 860px;
-    font-size: clamp(2.15rem, 3.2vw, 3.25rem);
+    font-size: clamp(2.3rem, 3.45vw, 3.45rem);
     line-height: 1.05;
     text-align: center;
   }

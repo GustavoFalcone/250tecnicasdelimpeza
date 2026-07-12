@@ -725,6 +725,10 @@ function LandingPage() {
               <span>+250 técnicas de limpeza profissional</span> prontas para imprimir e usar no
               dia a dia
             </h1>
+            <p className="subheadline">
+              Material visual, organizado por ambiente e pronto para imprimir, com técnicas simples
+              para consultar e aplicar em cada faxina.
+            </p>
             <ImageBlock
               src={IMAGES.hero}
               alt="Material digital de técnicas de limpeza profissional"
