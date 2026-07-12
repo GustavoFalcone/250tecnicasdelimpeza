@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CHECKOUTS, IMAGES } from './config/offer.js';
+import { CHECKOUTS, IMAGES, VISUAL_GALLERY } from './config/offer.js';
 
 const completeOfferImage = IMAGES.completePlan;
 
@@ -346,6 +346,124 @@ function loadDeferredImage(image) {
   image.fetchPriority = 'auto';
   image.src = image.dataset.src;
   image.removeAttribute('data-src');
+}
+
+function shuffleSlides(slides) {
+  const shuffled = [...slides];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function MaterialCarousel() {
+  const [slides] = useState(() => shuffleSlides(VISUAL_GALLERY));
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [cycleKey, setCycleKey] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const pointerStartRef = useRef(null);
+
+  const move = (direction) => {
+    setActiveIndex((current) => (current + direction + slides.length) % slides.length);
+    setCycleKey((current) => current + 1);
+  };
+
+  const goTo = (index) => {
+    setActiveIndex(index);
+    setCycleKey((current) => current + 1);
+  };
+
+  useEffect(() => {
+    if (isPaused) return undefined;
+    const interval = window.setInterval(() => move(1), 5000);
+    return () => window.clearInterval(interval);
+  }, [isPaused, cycleKey, slides.length]);
+
+  const positionFor = (index) => {
+    const offset = (index - activeIndex + slides.length) % slides.length;
+    if (offset === 0) return 'isActive';
+    if (offset === 1) return 'isNext';
+    if (offset === slides.length - 1) return 'isPrevious';
+    return 'isHidden';
+  };
+
+  const handlePointerUp = (event) => {
+    if (pointerStartRef.current === null) return;
+    const distance = event.clientX - pointerStartRef.current;
+    pointerStartRef.current = null;
+    if (Math.abs(distance) < 42) return;
+    move(distance < 0 ? 1 : -1);
+  };
+
+  return (
+    <div
+      className={`materialCarousel ${isPaused ? 'isPaused' : ''}`}
+      role="region"
+      aria-roledescription="carrossel"
+      aria-label="Páginas do material de limpeza"
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') setIsPaused(true);
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType === 'mouse') setIsPaused(false);
+      }}
+      onPointerDown={(event) => {
+        pointerStartRef.current = event.clientX;
+      }}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={() => {
+        pointerStartRef.current = null;
+      }}
+    >
+      <div className="carouselStage">
+        {slides.map((slide, index) => {
+          const position = positionFor(index);
+          const isVisible = position !== 'isHidden';
+          return (
+            <button
+              className={`carouselSlide ${position}`}
+              type="button"
+              key={slide.src}
+              tabIndex={isVisible ? 0 : -1}
+              aria-label={
+                position === 'isPrevious'
+                  ? 'Ver página anterior'
+                  : position === 'isNext'
+                    ? 'Ver próxima página'
+                    : `Página ${activeIndex + 1} de ${slides.length}. Avançar`
+              }
+              aria-hidden={!isVisible}
+              onClick={() => move(position === 'isPrevious' ? -1 : 1)}
+            >
+              <img src={slide.src} alt={position === 'isActive' ? slide.alt : ''} loading="lazy" decoding="async" />
+            </button>
+          );
+        })}
+        <button className="carouselArrow carouselArrowPrev" type="button" onClick={() => move(-1)} aria-label="Página anterior">‹</button>
+        <button className="carouselArrow carouselArrowNext" type="button" onClick={() => move(1)} aria-label="Próxima página">›</button>
+      </div>
+      <div className="carouselMeta" aria-live="polite">
+        <span>{String(activeIndex + 1).padStart(2, '0')}</span>
+        <div className="carouselDots" aria-label="Escolher página">
+          {slides.map((slide, index) => (
+            <button
+              className={index === activeIndex ? 'isActive' : ''}
+              type="button"
+              key={slide.src}
+              onClick={() => goTo(index)}
+              aria-label={`Ir para página ${index + 1}`}
+              aria-current={index === activeIndex ? 'true' : undefined}
+            />
+          ))}
+        </div>
+        <span>{String(slides.length).padStart(2, '0')}</span>
+      </div>
+      <div className="carouselTimer" aria-hidden="true">
+        <span key={`${activeIndex}-${cycleKey}`} />
+      </div>
+    </div>
+  );
 }
 
 function FloatingActions({ onPlansClick }) {
@@ -763,17 +881,13 @@ function LandingPage() {
           </div>
         </section>
 
-        <section className="section demoSection reveal">
+        <section className="section demoSection reveal" id="visual">
           <h2>Visual, organizado e pronto para imprimir</h2>
           <p>
             As páginas foram pensadas para serem simples de entender, com técnicas curtas, separadas
             por ambiente e fáceis de consultar durante a rotina de limpeza.
           </p>
-          <ImageBlock
-            src={IMAGES.visual}
-            alt="Páginas internas do material de limpeza prontas para imprimir"
-            className="demoImage"
-          />
+          <MaterialCarousel />
           <div className="pillRow">
             <span>Fácil de consultar</span>
             <span>Fácil de imprimir</span>

@@ -691,6 +691,193 @@ figure {
   box-shadow: none;
 }
 
+.materialCarousel {
+  width: calc(100% + 36px);
+  max-width: 980px;
+  margin: 20px 0 0 50%;
+  transform: translateX(-50%);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.carouselStage {
+  position: relative;
+  height: clamp(390px, 98vw, 540px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.carouselSlide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(74vw, 420px);
+  aspect-ratio: 1122 / 1402;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(143, 215, 220, 0.7);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 24px 55px rgba(8, 61, 67, 0.14);
+  cursor: pointer;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.76);
+  transition:
+    transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease,
+    filter 500ms ease;
+}
+
+.carouselSlide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.carouselSlide.isActive {
+  z-index: 3;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.carouselSlide.isPrevious,
+.carouselSlide.isNext {
+  z-index: 1;
+  opacity: 0.42;
+  filter: saturate(0.72);
+}
+
+.carouselSlide.isPrevious {
+  transform: translate(-50%, -50%) translateX(-78%) scale(0.82);
+}
+
+.carouselSlide.isNext {
+  transform: translate(-50%, -50%) translateX(78%) scale(0.82);
+}
+
+.carouselSlide.isHidden {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.carouselArrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0 0 3px;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 50%;
+  background: rgba(5, 63, 68, 0.88);
+  box-shadow: 0 10px 28px rgba(5, 63, 68, 0.22);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.carouselArrow:hover {
+  background: var(--aqua-dark);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.carouselArrowPrev {
+  left: max(8px, calc(50% - 230px));
+}
+
+.carouselArrowNext {
+  right: max(8px, calc(50% - 230px));
+}
+
+.carouselMeta {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  width: min(88%, 420px);
+  margin: 12px auto 0;
+  color: var(--aqua-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.carouselDots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.carouselDots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(8, 79, 84, 0.2);
+  cursor: pointer;
+  transition: width 240ms ease, background 240ms ease;
+}
+
+.carouselDots button.isActive {
+  width: 24px;
+  background: var(--aqua-dark);
+}
+
+.carouselTimer {
+  width: min(88%, 420px);
+  height: 2px;
+  margin: 9px auto 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(8, 79, 84, 0.1);
+}
+
+.carouselTimer span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--aqua);
+  transform-origin: left;
+  animation: carouselProgress 5s linear forwards;
+}
+
+.materialCarousel.isPaused .carouselTimer span {
+  animation-play-state: paused;
+}
+
+@keyframes carouselProgress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselSlide {
+    transition: none;
+  }
+
+  .carouselTimer span {
+    animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .carouselArrowPrev {
+    left: 10px;
+  }
+
+  .carouselArrowNext {
+    right: 10px;
+  }
+}
+
 .receiveGrid {
   display: grid;
   gap: 12px;
