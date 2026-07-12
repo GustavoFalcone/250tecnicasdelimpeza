@@ -644,7 +644,7 @@ function LandingPage() {
 
       const primeUpcomingImages = () => {
         document.querySelectorAll('img[data-src]').forEach((image, index) => {
-          if (index < 3) loadDeferredImage(image);
+          if (index < 4) loadDeferredImage(image);
         });
       };
 
