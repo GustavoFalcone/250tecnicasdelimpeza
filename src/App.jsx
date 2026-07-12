@@ -22,29 +22,6 @@ const audienceCards = [
   ]
 ];
 
-const materialItems = [
-  [
-    '+250 técnicas de limpeza profissional',
-    'Técnicas práticas separadas em 10 módulos para limpeza residencial e comercial leve.'
-  ],
-  [
-    'Técnicas por ambiente',
-    'Banheiros, cozinha, quartos, salas, pisos, vidros, escritórios e pós-obra leve.'
-  ],
-  [
-    'Técnicas de organização da faxina',
-    'Orientações para seguir uma ordem melhor, evitar retrabalho e revisar o serviço.'
-  ],
-  [
-    'Técnicas de cuidado e segurança',
-    'Cuidados com panos, produtos, superfícies delicadas, ventilação e uso seguro.'
-  ],
-  [
-    'Material pronto para imprimir',
-    'Você pode baixar, imprimir e consultar sempre que precisar.'
-  ]
-];
-
 const bonuses = [
   {
     title: 'Calculadora para saber quanto cobrar pela faxina',
@@ -800,21 +777,7 @@ function LandingPage() {
           </div>
         </section>
 
-        <section className="section receiveSection reveal" id="recebe">
-          <p className="sectionKicker">O material principal</p>
-          <h2>O que você recebe no material</h2>
-          <div className="receiveGrid">
-            {materialItems.map(([title, text]) => (
-              <article className="receiveCard" key={title}>
-                <span>✓</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section bonusSection reveal">
+        <section className="section bonusSection reveal" id="recebe">
           <p className="sectionKicker">Bônus do plano completo</p>
           <h2>Além das +250 técnicas, você também recebe 4 bônus</h2>
           <div className="bonusStack">
