@@ -8,7 +8,7 @@ export const CHECKOUTS = {
 
 export const IMAGES = {
   hero: '/images/hero.webp',
-  visual: '/images/visual-new.webp',
+  visual: '/images/visual-demo.webp',
   bonusCalculator: '/images/calculator.webp',
   bonusAgenda: '/images/agenda.webp',
   bonusArts: '/images/arts.webp',
