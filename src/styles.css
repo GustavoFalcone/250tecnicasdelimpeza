@@ -550,17 +550,13 @@ figure {
 
 .cta:hover,
 .secondaryButton:hover,
-.modalPrimaryCta:hover,
-.exitCompleteButton:hover,
-.exitBasicButton:hover {
+.modalPrimaryCta:hover {
   transform: translateY(-2px);
 }
 
 .cta:active,
 .secondaryButton:active,
-.modalPrimaryCta:active,
-.exitCompleteButton:active,
-.exitBasicButton:active {
+.modalPrimaryCta:active {
   transform: translateY(2px);
 }
 
@@ -1414,10 +1410,6 @@ details p {
   animation: modalSlideIn 260ms var(--ease-out);
 }
 
-.exitOverlay .modalPanel {
-  width: min(100%, 430px);
-}
-
 .modalClose {
   position: sticky;
   top: 10px;
@@ -1440,16 +1432,12 @@ details p {
 .modalClose:focus-visible,
 .modalPrimaryCta:focus-visible,
 .modalSecondaryLink:focus-visible,
-.exitBasicButton:focus-visible,
-.exitCompleteButton:focus-visible,
-.continueBrowsing:focus-visible,
 .secondaryButton:focus-visible {
   outline: 3px solid rgba(143, 215, 220, 0.55);
   outline-offset: 3px;
 }
 
-.upsellModal,
-.exitModal {
+.upsellModal {
   padding: 46px 17px 18px;
 }
 
@@ -1466,15 +1454,13 @@ details p {
   text-transform: uppercase;
 }
 
-.upsellModal h2,
-.exitHeader h2 {
+.upsellModal h2 {
   font-size: clamp(1.62rem, 7vw, 2.05rem);
   text-align: center;
 }
 
 .modalDescription,
-.modalReinforce,
-.exitHeader p {
+.modalReinforce {
   margin: 10px auto 0;
   color: var(--muted);
   font-size: 0.94rem;
@@ -1483,8 +1469,7 @@ details p {
   text-align: center;
 }
 
-.modalProductImage,
-.exitProductImage {
+.modalProductImage {
   width: 100%;
   max-width: 300px;
   height: auto;
@@ -1493,8 +1478,7 @@ details p {
   border-radius: 16px;
 }
 
-.modalBenefitList,
-.exitPlanList {
+.modalBenefitList {
   display: grid;
   gap: 8px;
   margin: 0;
@@ -1502,8 +1486,7 @@ details p {
   list-style: none;
 }
 
-.modalBenefitList li,
-.exitPlanList li {
+.modalBenefitList li {
   display: grid;
   grid-template-columns: 22px 1fr;
   gap: 9px;
@@ -1512,8 +1495,7 @@ details p {
   font-weight: 850;
 }
 
-.modalBenefitList span,
-.exitPlanList span {
+.modalBenefitList span {
   width: 22px;
   height: 22px;
   display: grid;
@@ -1523,15 +1505,6 @@ details p {
   color: var(--white);
   font-size: 0.78rem;
   font-weight: 950;
-}
-
-.exitPlanList .notIncluded {
-  color: #737c79;
-}
-
-.exitPlanList .notIncluded span {
-  background: #edf1ef;
-  color: #8b2d2d;
 }
 
 .upsellPrice {
@@ -1544,8 +1517,7 @@ details p {
   letter-spacing: -0.03em;
 }
 
-.modalPrimaryCta,
-.exitCompleteButton {
+.modalPrimaryCta {
   display: flex;
   min-height: 58px;
   align-items: center;
@@ -1565,8 +1537,7 @@ details p {
   text-transform: uppercase;
 }
 
-.modalSecondaryLink,
-.continueBrowsing {
+.modalSecondaryLink {
   display: block;
   width: 100%;
   margin-top: 14px;
@@ -1579,167 +1550,6 @@ details p {
   text-align: center;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.exitHeader {
-  padding: 0 2px 16px;
-}
-
-.exitPlans {
-  display: grid;
-  gap: 16px;
-}
-
-.exitBasicPlan,
-.exitCompletePlan {
-  position: relative;
-  border-radius: 18px;
-}
-
-.exitBasicPlan {
-  padding: 18px 16px;
-  border: 1.5px solid #24282d;
-  background: var(--white);
-  color: var(--ink);
-  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.14);
-}
-
-.exitBasicPlan .exitPlanList li {
-  color: var(--ink);
-}
-
-.exitCompletePlan {
-  padding: 28px 16px 18px;
-  border: 2px solid var(--aqua);
-  background:
-    linear-gradient(180deg, rgba(143, 215, 220, 0.18), transparent 34%),
-    #11161a;
-  color: var(--white);
-  box-shadow: 0 10px 0 #050606, 0 22px 40px rgba(0, 0, 0, 0.2);
-}
-
-.exitBasicPlan h3,
-.exitCompletePlan h3 {
-  margin: 0 0 4px;
-  font-size: 1.42rem;
-}
-
-.exitBasicPlan p,
-.exitCompletePlan p,
-.exitCompletePlan small {
-  display: block;
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-weight: 750;
-}
-
-.exitCompletePlan p,
-.exitCompletePlan small {
-  color: rgba(255, 255, 255, 0.72);
-  text-align: center;
-}
-
-.exitCompletePlan h3 {
-  text-align: center;
-}
-
-.exitOldPrice {
-  margin-top: 8px;
-  color: #5e7479;
-  font-size: 0.94rem;
-  font-weight: 900;
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-}
-
-.exitOldPrice.light {
-  color: #d8f7f9;
-  text-align: center;
-}
-
-.exitPrice {
-  margin: 0 0 14px;
-  color: var(--white);
-  font-size: 3rem;
-  line-height: 1;
-  font-weight: 950;
-  text-align: center;
-  letter-spacing: -0.03em;
-}
-
-.exitPrice.darkText {
-  color: var(--ink);
-  text-align: left;
-}
-
-.exitBasicButton {
-  display: flex;
-  min-height: 52px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 16px;
-  padding: 0 14px;
-  border: 1.5px solid var(--dark);
-  border-radius: 14px;
-  background: var(--white);
-  color: var(--dark);
-  font-weight: 950;
-  text-align: center;
-  text-decoration: none;
-}
-
-.exitCompletePlan .exitPlanList li {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.exitPageShell {
-  width: min(100%, 430px);
-  min-height: 100vh;
-  margin-inline: auto;
-  padding: calc(70px + env(safe-area-inset-top, 0px)) 14px 42px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(143, 215, 220, 0.2), transparent 34%),
-    var(--dark);
-  color: var(--white);
-}
-
-.exitPageHero {
-  padding: 16px 4px 22px;
-  text-align: center;
-}
-
-.exitPageHero h1 {
-  max-width: 10.5em;
-  color: var(--white);
-  font-size: clamp(1.8rem, 8vw, 2.45rem);
-}
-
-.exitPageHero .subheadline {
-  color: rgba(255, 255, 255, 0.76);
-}
-
-.exitPagePlans {
-  display: grid;
-  gap: 18px;
-}
-
-.exitPagePlans .exitBasicPlan {
-  box-shadow: 0 8px 0 rgba(255, 255, 255, 0.08);
-}
-
-.exitReturnLink {
-  display: block;
-  width: fit-content;
-  margin: 24px auto 0;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.72);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 850;
-  text-align: center;
-  text-decoration: underline;
 }
 
 @keyframes modalFadeIn {
@@ -2010,31 +1820,6 @@ details p {
     transform: none;
   }
 
-  .exitOverlay .modalPanel {
-    width: min(100%, 720px);
-  }
-
-  .exitPlans {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
-
-  .exitPageShell {
-    width: 100%;
-    max-width: none;
-    padding: calc(82px + env(safe-area-inset-top, 0px)) max(28px, calc((100vw - 840px) / 2 + 28px)) 58px;
-  }
-
-  .exitPageHero h1 {
-    max-width: 720px;
-    font-size: clamp(2.35rem, 5.8vw, 3.4rem);
-  }
-
-  .exitPagePlans {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 840px;
-    margin: 0 auto;
-  }
 }
 
 @media (min-width: 900px) {
@@ -2329,63 +2114,14 @@ details p {
     width: min(100%, 520px);
   }
 
-  .exitOverlay .modalPanel {
-    width: min(100%, 980px);
-  }
-
   .upsellModal {
     padding: 50px 34px 28px;
-  }
-
-  .exitModal {
-    padding: 48px 28px 24px;
   }
 
   .modalProductImage {
     max-width: 360px;
   }
 
-  .exitPlans {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-    gap: 22px;
-    align-items: start;
-  }
-
-  .exitCompletePlan {
-    transform: translateY(-8px);
-  }
-
-  .exitProductImage {
-    max-width: 360px;
-  }
-
-  .exitPageShell {
-    width: 100%;
-    max-width: none;
-    padding: calc(88px + env(safe-area-inset-top, 0px)) max(32px, calc((100vw - 1040px) / 2 + 32px)) 72px;
-  }
-
-  .exitPageHero {
-    max-width: 820px;
-    margin: 0 auto;
-  }
-
-  .exitPageHero h1 {
-    max-width: 820px;
-    font-size: clamp(3rem, 4.4vw, 4.2rem);
-  }
-
-  .exitPagePlans {
-    grid-template-columns: minmax(320px, 0.92fr) minmax(380px, 1.08fr);
-    gap: 24px;
-    max-width: 1040px;
-    margin: 0 auto;
-    align-items: start;
-  }
-
-  .exitPagePlans .exitCompletePlan {
-    transform: translateY(-8px);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

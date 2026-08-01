@@ -566,141 +566,18 @@ function BasicPlanUpsellModal({ onClose, onCheckout }) {
   );
 }
 
-function ExitPlanList({ items }) {
-  return (
-    <ul className="exitPlanList">
-      {items.map(([type, text]) => (
-        <li className={type === 'no' ? 'notIncluded' : ''} key={text}>
-          <span>{type === 'no' ? '×' : '✓'}</span>
-          {text}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function ExitOfferPage({ onContinue }) {
-  const completeExitItems = completeItems.map((item) => ['yes', item]);
-
-  const handleCheckoutClick = () => {
-    window.sessionStorage.setItem('checkout-clicked', 'true');
-  };
-
-  return (
-    <>
-      <CountdownBar />
-      <main className="exitPageShell">
-        <section className="exitPageHero reveal isVisible">
-          <p className="modalKicker">Opção especial</p>
-          <h1>Antes de sair, veja esta opção especial</h1>
-          <p className="subheadline">Você ainda pode garantir o material com desconto hoje.</p>
-        </section>
-
-        <section className="exitPagePlans">
-          <article className="exitBasicPlan">
-            <h3>Básico com desconto</h3>
-            <p>+250 técnicas de limpeza profissional</p>
-            <div className="exitOldPrice">De R$ 10,00</div>
-            <div className="exitPrice darkText">R$ 5,90</div>
-            <ExitPlanList items={basicItems} />
-            <a
-              className="exitBasicButton"
-              href={CHECKOUTS.basicDownsell}
-              onClick={handleCheckoutClick}
-            >
-              Garantir Plano Básico
-            </a>
-          </article>
-
-          <article className="exitCompletePlan">
-            <div className="featuredBadge">Mais recomendado</div>
-            <h3>Completo com desconto</h3>
-            <p>+250 técnicas + 4 bônus</p>
-            <img
-              className="exitProductImage"
-              src={completeOfferImage}
-              alt="Plano completo com material e bônus"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="exitOldPrice light">De R$ 27,90</div>
-            <div className="exitPrice">R$ 17,90</div>
-            <small>Oferta especial antes de sair</small>
-            <ExitPlanList items={completeExitItems} />
-            <a
-              className="exitCompleteButton"
-              href={CHECKOUTS.completeDownsell}
-              onClick={handleCheckoutClick}
-            >
-              Garantir Plano Completo
-            </a>
-          </article>
-        </section>
-
-        {onContinue ? (
-          <button className="exitReturnLink" type="button" onClick={onContinue}>
-            Continuar navegando
-          </button>
-        ) : (
-          <a className="exitReturnLink" href="/">
-            Continuar navegando
-          </a>
-        )}
-      </main>
-    </>
-  );
-}
-
 function LandingPage() {
-  const isExitOfferPage = false;
   const [isBasicUpsellOpen, setIsBasicUpsellOpen] = useState(false);
-  const [hasClickedCheckout, setHasClickedCheckout] = useState(false);
-  const [showExitOfferPage, setShowExitOfferPage] = useState(false);
   const [showFloatingActions, setShowFloatingActions] = useState(false);
-  const suppressExitUntilRef = useRef(0);
 
   const markCheckoutClick = () => {
-    setHasClickedCheckout(true);
     window.sessionStorage.setItem('checkout-clicked', 'true');
-  };
-
-  const suppressExitIntent = (duration = 1800) => {
-    const until = Date.now() + duration;
-    suppressExitUntilRef.current = until;
-    window.sessionStorage.setItem('suppress-exit-until', String(until));
   };
 
   const handlePlansClick = (event) => {
     event.preventDefault();
-    suppressExitIntent(2200);
     window.history.replaceState(window.history.state, '', '#checkout');
     document.getElementById('checkout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const redirectToExitOffer = () => {
-    const alreadyRedirected = window.sessionStorage.getItem('exit-redirect-used') === 'true';
-    const checkoutClicked =
-      hasClickedCheckout || window.sessionStorage.getItem('checkout-clicked') === 'true';
-    const suppressedUntil = Math.max(
-      suppressExitUntilRef.current,
-      Number(window.sessionStorage.getItem('suppress-exit-until') || 0)
-    );
-
-    if (
-      isExitOfferPage ||
-      alreadyRedirected ||
-      checkoutClicked ||
-      isBasicUpsellOpen ||
-      showExitOfferPage ||
-      Date.now() < suppressedUntil
-    ) {
-      return false;
-    }
-
-    window.sessionStorage.setItem('exit-redirect-used', 'true');
-    setShowExitOfferPage(true);
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    return true;
   };
 
   useEffect(() => {
@@ -761,7 +638,7 @@ function LandingPage() {
     document.querySelectorAll('img[data-src]').forEach((image) => {
       loadDeferredImage(image);
     });
-  }, [isBasicUpsellOpen, showExitOfferPage]);
+  }, [isBasicUpsellOpen]);
 
   useEffect(() => {
     let frame = 0;
@@ -806,32 +683,6 @@ function LandingPage() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const handleMouseLeave = (event) => {
-      if (event.clientY <= 10) redirectToExitOffer();
-    };
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    return () => document.removeEventListener('mouseleave', handleMouseLeave);
-  }, [hasClickedCheckout, isBasicUpsellOpen, showExitOfferPage]);
-
-  useEffect(() => {
-    const stateKey = 'landing-exit-guard';
-
-    if (!window.history.state?.[stateKey]) {
-      window.history.pushState({ [stateKey]: true }, '', window.location.href);
-    }
-
-    const handlePopState = () => redirectToExitOffer();
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [hasClickedCheckout, isBasicUpsellOpen, showExitOfferPage]);
-
-  if (showExitOfferPage) {
-    return <ExitOfferPage onContinue={() => setShowExitOfferPage(false)} />;
-  }
-
   return (
     <>
       <CleaningProgress />
@@ -858,7 +709,7 @@ function LandingPage() {
               <CTA className="pulseCta" onClick={handlePlansClick}>
                 Acessar as técnicas
               </CTA>
-              <a className="secondaryHeroLink" href="#recebe" onClick={suppressExitIntent}>
+              <a className="secondaryHeroLink" href="#recebe">
                 Ver o que vou receber
               </a>
             </div>
@@ -1026,11 +877,5 @@ function LandingPage() {
 }
 
 export default function App() {
-  const isExitOfferPage = window.location.pathname.replace(/\/+$/, '') === '/oferta-especial';
-
-  if (isExitOfferPage) {
-    return <ExitOfferPage />;
-  }
-
   return <LandingPage />;
 }
