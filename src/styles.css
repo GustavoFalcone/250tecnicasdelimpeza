@@ -876,6 +876,103 @@ figure {
   }
 }
 
+/* Two continuous galleries keep the material visible without interrupting the reading flow. */
+.materialCarousel {
+  --marquee-card-width: clamp(122px, 17vw, 184px);
+  --marquee-gap: clamp(10px, 1.25vw, 16px);
+  --marquee-duration: 42s;
+  display: grid;
+  gap: var(--marquee-gap);
+  width: min(100%, 1080px);
+  max-width: 1080px;
+  margin: 28px auto 0;
+  padding: 6px 0;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.marqueeWindow {
+  width: 100%;
+  overflow: hidden;
+  padding: 4px 0 7px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marqueeGroup {
+  display: flex;
+  gap: var(--marquee-gap);
+  width: max-content;
+  padding-right: var(--marquee-gap);
+}
+
+.marqueeCard {
+  width: var(--marquee-card-width);
+  aspect-ratio: 1122 / 1402;
+  flex: 0 0 auto;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(71, 151, 159, 0.52);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 14px 28px rgba(8, 79, 84, 0.16);
+}
+
+.marqueeCard img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.marqueeWindowRight .marqueeTrack {
+  animation: materialMarqueeRight var(--marquee-duration) linear infinite;
+}
+
+.marqueeWindowLeft .marqueeTrack {
+  animation: materialMarqueeLeft var(--marquee-duration) linear infinite;
+}
+
+@keyframes materialMarqueeRight {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes materialMarqueeLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 600px) {
+  .materialCarousel {
+    --marquee-card-width: clamp(108px, 31vw, 144px);
+    --marquee-gap: 10px;
+    --marquee-duration: 32s;
+    width: calc(100% + (var(--page-gutter) * 2));
+    margin-left: calc(var(--page-gutter) * -1);
+    margin-right: calc(var(--page-gutter) * -1);
+    margin-top: 22px;
+  }
+
+  .marqueeWindow {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  }
+
+  .marqueeCard {
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(8, 79, 84, 0.14);
+  }
+}
+
 .receiveGrid {
   display: grid;
   gap: 12px;

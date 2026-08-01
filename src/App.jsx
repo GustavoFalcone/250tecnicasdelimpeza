@@ -357,7 +357,7 @@ function shuffleSlides(slides) {
   return shuffled;
 }
 
-function MaterialCarousel() {
+function LegacyMaterialCarousel() {
   const [slides] = useState(() => shuffleSlides(VISUAL_GALLERY));
   const [activeIndex, setActiveIndex] = useState(0);
   const [cycleKey, setCycleKey] = useState(0);
@@ -462,6 +462,34 @@ function MaterialCarousel() {
       <div className="carouselTimer" aria-hidden="true">
         <span key={`${activeIndex}-${cycleKey}`} />
       </div>
+    </div>
+  );
+}
+
+function MaterialCarousel() {
+  const [slides] = useState(() => shuffleSlides(VISUAL_GALLERY));
+  const lowerRowSlides = [...slides.slice(3), ...slides.slice(0, 3)];
+
+  const renderRow = (rowSlides, direction, label) => (
+    <div className={`marqueeWindow marqueeWindow${direction}`} aria-label={label}>
+      <div className="marqueeTrack">
+        {[0, 1].map((set) => (
+          <div className="marqueeGroup" key={set} aria-hidden={set === 1}>
+            {rowSlides.map((slide) => (
+              <figure className="marqueeCard" key={`${set}-${slide.src}`}>
+                <img src={slide.src} alt={set === 0 ? slide.alt : ''} loading="lazy" decoding="async" />
+              </figure>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="materialCarousel" role="region" aria-label="Paginas do material de limpeza">
+      {renderRow(slides, 'Right', 'Paginas do material passando para a direita')}
+      {renderRow(lowerRowSlides, 'Left', 'Paginas do material passando para a esquerda')}
     </div>
   );
 }
