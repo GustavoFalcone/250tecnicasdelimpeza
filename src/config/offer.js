@@ -5,13 +5,13 @@ export const CHECKOUTS = {
 };
 
 export const IMAGES = {
-  hero: '/images/hero.webp',
+  hero: '/images/hero-faxina-rapida.webp',
   visual: '/images/visual-demo.webp',
   bonusCalculator: '/images/calculator.webp',
   bonusAgenda: '/images/agenda.webp',
   bonusArts: '/images/arts.webp',
   bonusCertificate: '/images/certificate.webp',
-  completePlan: '/images/complete.webp',
+  completePlan: '/images/complete-faxina-rapida.webp',
   guaranteeSeal: '/images/guarantee.webp',
   checkoutTrust: '/images/trust.webp'
 };

@@ -54,7 +54,8 @@ const bonuses = [
 ];
 
 const basicItems = [
-  ['yes', '+250 técnicas de limpeza']
+  ['yes', '+250 técnicas de limpeza'],
+  ['yes', 'Acesso imediato']
 ];
 
 const completeItems = [
@@ -110,21 +111,19 @@ const faqs = [
   ]
 ];
 
-function getBrasiliaRemaining() {
-  const parts = new Intl.DateTimeFormat('pt-BR', {
-    timeZone: 'America/Sao_Paulo',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  }).formatToParts(new Date());
+const OFFER_DURATION_SECONDS = 60 * 60 + 7 * 60 + 43;
 
-  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  const hours = Number(values.hour === '24' ? 0 : values.hour);
-  const minutes = Number(values.minute);
-  const seconds = Number(values.second);
-  const elapsed = hours * 3600 + minutes * 60 + seconds;
-  return Math.max(0, 86400 - elapsed);
+function useOfferCountdown() {
+  const endsAtRef = useRef(Date.now() + OFFER_DURATION_SECONDS * 1000);
+  const getRemaining = () => Math.max(0, Math.ceil((endsAtRef.current - Date.now()) / 1000));
+  const [remaining, setRemaining] = useState(getRemaining);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setRemaining(getRemaining()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return remaining;
 }
 
 function formatTime(totalSeconds) {
@@ -296,18 +295,7 @@ function CleaningProgress() {
   );
 }
 
-function CountdownBar() {
-  const [remaining, setRemaining] = useState(getBrasiliaRemaining());
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      const next = getBrasiliaRemaining();
-      setRemaining(next === 0 ? 86400 : next);
-    }, 1000);
-
-    return () => window.clearInterval(timer);
-  }, []);
-
+function CountdownBar({ remaining }) {
   return (
     <div className="topCountdown" aria-label="Oferta exclusiva apenas hoje">
       <div className="topCountdownInner">
@@ -523,6 +511,16 @@ function BonusSummary() {
   );
 }
 
+function CheckoutCountdown({ remaining }) {
+  return (
+    <section className="checkoutCountdown reveal" aria-label="Tempo restante da oferta">
+      <p>Condição especial liberada hoje</p>
+      <strong>FALTAM {formatTime(remaining)}</strong>
+      <span>para garantir o material com todos os bônus</span>
+    </section>
+  );
+}
+
 function FloatingActions({ onPlansClick }) {
   return (
     <div className="floatingActions singleAction">
@@ -626,6 +624,7 @@ function BasicPlanUpsellModal({ onClose, onCheckout }) {
 function LandingPage() {
   const [isBasicUpsellOpen, setIsBasicUpsellOpen] = useState(false);
   const [showFloatingActions, setShowFloatingActions] = useState(false);
+  const remaining = useOfferCountdown();
 
   const markCheckoutClick = () => {
     window.sessionStorage.setItem('checkout-clicked', 'true');
@@ -743,13 +742,16 @@ function LandingPage() {
   return (
     <>
       <CleaningProgress />
-      <CountdownBar />
+      <CountdownBar remaining={remaining} />
       <main className="mobileShell">
         <section className="hero reveal">
           <div className="heroCopy">
             <h1>
-              <span>+250 técnicas de limpeza</span> para terminar a faxina mais rápido, com menos
-              esforço e sem retrabalho
+              <span>+250 técnicas de limpeza</span>
+              <br />
+              para terminar a faxina mais rápido,
+              <br />
+              com menos esforço e sem retrabalho
             </h1>
             <p className="subheadline">
               Material visual, organizado por ambiente e pronto para imprimir, com uma ordem simples
@@ -821,6 +823,8 @@ function LandingPage() {
           </div>
           <BonusSummary />
         </section>
+
+        <CheckoutCountdown remaining={remaining} />
 
         <section className="priceSection reveal" id="checkout">
           <div className="priceIntro">
