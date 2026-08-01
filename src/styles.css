@@ -1085,6 +1085,116 @@ figure {
   text-transform: uppercase;
 }
 
+.bonusSummary {
+  width: min(100%, 470px);
+  margin: 28px auto 0;
+  padding: 28px 20px 24px;
+  border: 1px solid rgba(143, 215, 220, 0.72);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 50% -20%, rgba(143, 215, 220, 0.17), transparent 47%),
+    #10191a;
+  box-shadow: 0 20px 42px rgba(8, 61, 67, 0.2);
+  color: var(--white);
+  text-align: center;
+}
+
+.bonusSummaryKicker {
+  width: fit-content;
+  margin: 0 auto 12px;
+  padding: 6px 10px;
+  border: 1px solid rgba(143, 215, 220, 0.6);
+  border-radius: 999px;
+  color: var(--aqua);
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bonusSummary h3 {
+  max-width: 15ch;
+  margin: 0 auto 18px;
+  color: var(--white);
+  font-size: clamp(1.35rem, 5vw, 1.7rem);
+  line-height: 1.08;
+}
+
+.bonusSummaryList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.23);
+  list-style: none;
+  text-align: left;
+}
+
+.bonusSummaryList li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 39px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.23);
+  font-size: 0.79rem;
+}
+
+.bonusSummaryList strong,
+.bonusSummaryTotal span,
+.bonusSummaryFree > span {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bonusSummaryList li > span {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 850;
+  text-decoration: line-through;
+  text-decoration-color: var(--aqua);
+  text-decoration-thickness: 2px;
+}
+
+.bonusSummaryTotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  color: var(--white);
+  font-size: 0.76rem;
+}
+
+.bonusSummaryTotal strong {
+  padding: 9px 11px;
+  border: 1px solid var(--aqua);
+  border-radius: 9px;
+  color: var(--aqua);
+  font-size: 0.98rem;
+  white-space: nowrap;
+}
+
+.bonusSummaryFree {
+  display: grid;
+  gap: 4px;
+  margin-top: 21px;
+}
+
+.bonusSummaryFree > span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.67rem;
+}
+
+.bonusSummaryFree > strong {
+  color: var(--aqua);
+  font-size: clamp(2.1rem, 9vw, 2.75rem);
+  line-height: 0.94;
+}
+
+.bonusSummaryFree small {
+  color: var(--white);
+  font-size: 0.67rem;
+  text-transform: uppercase;
+}
+
 .priceSection {
   padding: clamp(54px, 8vw, 92px) var(--page-gutter);
   background:

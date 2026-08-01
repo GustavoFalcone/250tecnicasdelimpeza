@@ -27,25 +27,29 @@ const bonuses = [
     title: 'Calculadora para saber quanto cobrar pela faxina',
     text: 'Uma tabela simples para ajudar você a calcular o valor do serviço sem cobrar no chute, considerando tempo, transporte, materiais e dificuldade da limpeza.',
     image: IMAGES.bonusCalculator,
-    value: 'Bônus 01'
+    value: 'Bônus 01',
+    price: 'R$ 27,00'
   },
   {
     title: 'Agenda da semana para anotar seus clientes',
     text: 'Folhas prontas para organizar clientes, horários, valores combinados, pagamentos e observações da semana.',
     image: IMAGES.bonusAgenda,
-    value: 'Bônus 02'
+    value: 'Bônus 02',
+    price: 'R$ 17,00'
   },
   {
     title: 'Artes prontas para divulgar sua faxina',
     text: 'Modelos visuais para divulgar seus serviços no WhatsApp, Instagram e grupos de bairro, de forma clara e bonita.',
     image: IMAGES.bonusArts,
-    value: 'Bônus 03'
+    value: 'Bônus 03',
+    price: 'R$ 23,00'
   },
   {
     title: 'Certificado de Conclusão',
     text: 'Um certificado bonito para preencher, imprimir ou salvar ao terminar o material.',
     image: IMAGES.bonusCertificate,
-    value: 'Bônus 04'
+    value: 'Bônus 04',
+    price: 'R$ 20,00'
   }
 ];
 
@@ -494,6 +498,31 @@ function MaterialCarousel() {
   );
 }
 
+function BonusSummary() {
+  return (
+    <aside className="bonusSummary" aria-label="Soma dos bônus incluídos">
+      <p className="bonusSummaryKicker">Presentes incluídos</p>
+      <h3>Somando tudo o que você vai levar:</h3>
+      <ul className="bonusSummaryList">
+        {bonuses.map((bonus) => (
+          <li key={bonus.value}>
+            <strong>{bonus.value}</strong>
+            <span>{bonus.price}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="bonusSummaryTotal">
+        <span>Valor total dos bônus</span>
+        <strong>R$ 87,00</strong>
+      </div>
+      <div className="bonusSummaryFree">
+        <span>Mas hoje, tudo sairá por:</span>
+        <strong>R$ 0 <small>(Grátis)</small></strong>
+      </div>
+    </aside>
+  );
+}
+
 function FloatingActions({ onPlansClick }) {
   return (
     <div className="floatingActions singleAction">
@@ -783,9 +812,14 @@ function LandingPage() {
                 <ImageBlock src={bonus.image} alt={bonus.title} className="bonusImage" />
                 <span className="bonusNumber">{bonus.value}</span>
                 <p>{bonus.text}</p>
+                <div className="bonusPrice">
+                  <span>{bonus.price}</span>
+                  <strong>Grátis</strong>
+                </div>
               </article>
             ))}
           </div>
+          <BonusSummary />
         </section>
 
         <section className="priceSection reveal" id="checkout">
