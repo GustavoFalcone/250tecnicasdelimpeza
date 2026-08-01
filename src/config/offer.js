@@ -24,5 +24,5 @@ export const VISUAL_GALLERY = [
   { src: '/images/carousel-4.webp', alt: 'Técnicas de limpeza apresentadas visualmente' },
   { src: '/images/carousel-5.webp', alt: 'Página prática para consultar durante a faxina' },
   { src: '/images/carousel-6.webp', alt: 'Exemplo de conteúdo do material digital' },
-  { src: '/images/carousel-7.webp', alt: 'Página visual do guia de limpeza profissional' }
+  { src: '/images/carousel-7.webp', alt: 'Página visual para uma faxina mais rápida' }
 ];

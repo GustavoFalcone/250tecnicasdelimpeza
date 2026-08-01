@@ -5,20 +5,20 @@ const completeOfferImage = IMAGES.completePlan;
 
 const audienceCards = [
   [
-    'Para diaristas e faxineiras',
-    'Que querem consultar técnicas simples antes, durante ou depois da faxina.'
+    'Para quem quer terminar a faxina mais rápido',
+    'Técnicas diretas para seguir uma ordem melhor e ganhar tempo em cada ambiente.'
   ],
   [
-    'Para quem faz limpeza completa',
+    'Para quem se cansa de voltar ao mesmo lugar',
+    'Orientações para reduzir retrabalho e resolver cada etapa antes de seguir para a próxima.'
+  ],
+  [
+    'Para a faxina de casa',
     'Com técnicas para banheiro, cozinha, quartos, salas, pisos, vidros e finalização.'
   ],
   [
-    'Para quem atende casas, apartamentos e escritórios',
-    'Com orientações para ambientes residenciais e comerciais leves.'
-  ],
-  [
-    'Para quem quer evitar retrabalho',
-    'Com técnicas para seguir uma ordem melhor e não esquecer detalhes importantes.'
+    'Para quem quer uma rotina mais leve',
+    'Consulte o que fazer em cada etapa, sem complicar a faxina nem gastar esforço à toa.'
   ]
 ];
 
@@ -37,7 +37,7 @@ const bonuses = [
   },
   {
     title: 'Artes prontas para divulgar sua faxina',
-    text: 'Modelos visuais para divulgar seus serviços no WhatsApp, Instagram e grupos de bairro, de forma mais bonita e profissional.',
+    text: 'Modelos visuais para divulgar seus serviços no WhatsApp, Instagram e grupos de bairro, de forma clara e bonita.',
     image: IMAGES.bonusArts,
     value: 'Bônus 03'
   },
@@ -50,11 +50,11 @@ const bonuses = [
 ];
 
 const basicItems = [
-  ['yes', '+250 técnicas de limpeza profissional']
+  ['yes', '+250 técnicas de limpeza']
 ];
 
 const completeItems = [
-  '+250 técnicas de limpeza profissional',
+  '+250 técnicas de limpeza',
   'Calculadora para saber quanto cobrar pela faxina',
   'Agenda da semana para anotar seus clientes',
   'Artes prontas para divulgar sua faxina',
@@ -77,8 +77,8 @@ const faqs = [
     'É digital. Você recebe o acesso online e pode imprimir as páginas quando quiser.'
   ],
   [
-    'Preciso ter experiência com limpeza profissional?',
-    'Não. O material usa linguagem simples e foi feito para facilitar a consulta no dia a dia.'
+    'Preciso ter experiência com limpeza?',
+    'Não. O material usa linguagem simples para ajudar você a fazer a faxina com uma ordem mais prática.'
   ],
   [
     'Posso imprimir?',
@@ -94,7 +94,7 @@ const faqs = [
   ],
   [
     'Serve para limpeza residencial?',
-    'Sim. O foco principal é limpeza residencial e comercial leve.'
+    'Sim. O material foi pensado para a faxina de casas e apartamentos.'
   ],
   [
     'Serve para pós-obra?',
@@ -719,16 +719,16 @@ function LandingPage() {
         <section className="hero reveal">
           <div className="heroCopy">
             <h1>
-              <span>+250 técnicas de limpeza profissional</span> prontas para imprimir e usar no
-              dia a dia
+              <span>+250 técnicas de limpeza</span> para terminar a faxina mais rápido, com menos
+              esforço e sem retrabalho
             </h1>
             <p className="subheadline">
-              Material visual, organizado por ambiente e pronto para imprimir, com técnicas simples
-              para consultar e aplicar em cada faxina.
+              Material visual, organizado por ambiente e pronto para imprimir, com uma ordem simples
+              para você limpar sem perder tempo voltando ao mesmo lugar.
             </p>
             <ImageBlock
               src={IMAGES.hero}
-              alt="Material digital de técnicas de limpeza profissional"
+              alt="Material digital com técnicas de limpeza"
               className="heroImage"
               loading="eager"
               fetchPriority="high"
@@ -764,7 +764,7 @@ function LandingPage() {
           <h2>Visual, organizado e pronto para imprimir</h2>
           <p>
             As páginas foram pensadas para serem simples de entender, com técnicas curtas, separadas
-            por ambiente e fáceis de consultar durante a rotina de limpeza.
+            por ambiente e fáceis de consultar para fazer cada etapa com mais rapidez e menos esforço.
           </p>
           <MaterialCarousel />
           <div className="pillRow">
@@ -886,8 +886,8 @@ function LandingPage() {
         </section>
 
         <section className="finalCta reveal">
-          <h2>Tenha um material pronto para consultar, imprimir e usar na rotina de limpeza</h2>
-          <p>+250 técnicas visuais e 4 bônus para deixar seu dia a dia mais organizado.</p>
+          <h2>Termine a faxina com mais rapidez, menos esforço e sem voltar ao mesmo lugar</h2>
+          <p>+250 técnicas visuais e 4 bônus para deixar sua rotina mais leve e organizada.</p>
           <CTA className="pulseCta" onClick={handlePlansClick}>
             Quero acessar o material
           </CTA>

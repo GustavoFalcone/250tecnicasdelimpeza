@@ -1,4 +1,4 @@
-# Landing Page - +250 Técnicas de Limpeza Profissional
+# Landing Page - +250 Técnicas de Limpeza
 
 Landing page criada em projeto separado do entregável.
 
