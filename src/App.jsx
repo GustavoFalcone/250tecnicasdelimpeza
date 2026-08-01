@@ -512,11 +512,42 @@ function BonusSummary() {
 }
 
 function CheckoutCountdown({ remaining }) {
+  const [hours, minutes, seconds] = formatTime(remaining).split(':');
+  const units = [
+    ['Horas', hours],
+    ['Minutos', minutes],
+    ['Segundos', seconds]
+  ];
+
   return (
-    <section className="checkoutCountdown reveal" aria-label="Tempo restante da oferta">
-      <p>Condição especial liberada hoje</p>
-      <strong>FALTAM {formatTime(remaining)}</strong>
-      <span>para garantir o material com todos os bônus</span>
+    <section id="oferta-temporizada" className="checkoutCountdown reveal" aria-label="Tempo restante da oferta">
+      <img className="countdownCleaner countdownCleanerLeft" src="/images/cleaner-left.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      <div className="checkoutCountdownContent">
+        <p className="checkoutCountdownKicker">Oferta especial de hoje</p>
+        <h2>
+          <span>Termine sua faxina mais rápido</span>
+          <strong>Condição liberada por tempo limitado</strong>
+        </h2>
+        <p className="checkoutCountdownLead">
+          Garanta as +250 técnicas e os 4 bônus antes do tempo acabar.
+        </p>
+        <div className="countdownBoard" aria-label={`Faltam ${formatTime(remaining)}`}>
+          {units.map(([label, value], index) => (
+            <React.Fragment key={label}>
+              <div className="countdownUnit">
+                <div className="countdownDigits" aria-hidden="true">
+                  {value.split('').map((digit, digitIndex) => (
+                    <span className="countdownDigit" key={`${label}-${digitIndex}`}>{digit}</span>
+                  ))}
+                </div>
+                <small>{label}</small>
+              </div>
+              {index < units.length - 1 && <span className="countdownSeparator" aria-hidden="true">:</span>}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+      <img className="countdownCleaner countdownCleanerRight" src="/images/cleaner-right.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
     </section>
   );
 }
