@@ -777,6 +777,7 @@ function LandingPage() {
       <main className="mobileShell">
         <section className="hero reveal">
           <div className="heroCopy">
+            <p className="heroBadge">Material Ilustrado</p>
             <h1>
               <span>+250 técnicas de limpeza</span>
               <br />
